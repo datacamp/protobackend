@@ -46,3 +46,13 @@ class Dispatcher:
             return self.dispatch({'command': cmd_name, 'payload': payload})
 
         return f
+
+    def _expose_run(self, cmd_name):
+        """For backwards compatibility.
+        
+        Commands.py used a function like console, to call a method named runConsole.
+        """
+        def f(payload):
+            return self.dispatch({'command': 'run' + cmd_name.title(), 'payload': payload})
+
+        return f
