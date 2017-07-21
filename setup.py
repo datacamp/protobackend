@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(
-	name='sqlbackend',
+	name='protobackend',
 	version='0.0.1',
 	packages=['protobackend']
 )
