@@ -56,3 +56,22 @@ class Dispatcher:
             return self.dispatch({'command': 'run' + cmd_name.title(), 'payload': payload})
 
         return f
+
+# Misc hooks ------------------------------------------------------------------
+
+def init_hook(data, cmd, dispatcher):
+    if cmd == 'runInit':
+        dc_type = data.get('DC_TYPE')
+
+        # choose exercise, based on dc_type
+        try: ExCls = dispatcher.exercises[dc_type]
+        except KeyError:
+            error_msg = "Exercise type {} not one of {}".format(
+                            dc_type,
+                            ", ".join(dispatcher.exercises.keys())
+                            )
+            raise KeyError(error_msg)
+
+        dispatcher.active_exercise = ExCls(data)
+    
+    return data
