@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
 	name='protobackend',
-	version='0.0.1',
+	version='0.0.2',
 	packages=['protobackend'],
         description = 'Generic backend',
         author = 'Michael Chow',
