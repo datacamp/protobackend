@@ -17,7 +17,7 @@ class CaptureErrors(object):
         if exc_type is None:
             return
 
-        debug = os.environ.get('SQL_BACKEND_DEBUG')
+        debug = os.environ.get('SQL_BACKEND_DEBUG') or os.environ.get('DC_BACKEND_DEBUG')
         if debug == "True" :
             error_message = Traceback.format_exception(exc_type, exception, traceback)
         elif debug == "raise":
@@ -55,3 +55,13 @@ def safe_dump(f, json_dumper=None):
         return json_dumper(fallback_output)
     return wrapper
 
+def print_output(s):
+    print("\n[1] %s\n\n>>> " % json.dumps(s))
+
+def output_dec(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        s = f(*args, **kwargs)
+        print_output(s)
+        return s
+    return wrapper

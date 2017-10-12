@@ -47,15 +47,19 @@ class Dispatcher:
 
         return f
 
-    def _expose_run(self, cmd_name):
+    def _expose_run(self, cmd_name, dispatch = None):
         """For backwards compatibility.
         
         Commands.py used a function like console, to call a method named runConsole.
         """
+
+        dispatch = self.dispatch if dispatch is None else dispatch
+
         def f(payload):
             # convert to camel case
             cml_cmd = "run" + "".join([wrd.title() for wrd in cmd_name.split('_')])
-            return self.dispatch({'command': cml_cmd, 'payload': payload})
+
+            return dispatch({'command': cml_cmd, 'payload': payload})
 
         return f
 
@@ -102,3 +106,4 @@ class WorkerThread(threading.Thread):
     def join(self, timeout = None):
         self.stop_request.set()
         super().join(timeout)
+
