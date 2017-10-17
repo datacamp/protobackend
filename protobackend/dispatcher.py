@@ -47,13 +47,19 @@ class Dispatcher:
 
         return f
 
-    def _expose_run(self, cmd_name):
+    def _expose_run(self, cmd_name, dispatch = None):
         """For backwards compatibility.
         
         Commands.py used a function like console, to call a method named runConsole.
         """
+
+        dispatch = self.dispatch if dispatch is None else dispatch
+
         def f(payload):
-            return self.dispatch({'command': 'run' + cmd_name.title(), 'payload': payload})
+            # convert to camel case
+            cml_cmd = "run" + "".join([wrd.title() for wrd in cmd_name.split('_')])
+
+            return dispatch({'command': cml_cmd, 'payload': payload})
 
         return f
 
@@ -75,3 +81,29 @@ def init_hook(data, cmd, dispatcher):
         dispatcher.active_exercise = ExCls(data)
     
     return data
+
+# Worker thread ---------------------------------------------------------------
+
+import threading
+from queue import Queue, Empty
+class WorkerThread(threading.Thread):
+    def __init__(self, dispatch, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.q_command = Queue()
+        self.q_result = Queue()
+        self.stop_request = threading.Event()
+        self.dispatch = dispatch
+
+    def run(self):
+        while not self.stop_request.is_set():
+            try:
+                cmd = self.q_command.get(True, 0.05)
+                self.q_result.put((cmd, self.dispatch(cmd)))
+                self.q_command.task_done()
+            except Empty:
+                continue
+
+    def join(self, timeout = None):
+        self.stop_request.set()
+        super().join(timeout)
+
