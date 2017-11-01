@@ -30,6 +30,12 @@ class Dispatcher:
         return post_payload
 
     def hook(self, hook_type):
+        """Decorator for creating pre/post dispatch hooks.
+        
+        Arguments:
+            hook_type: either "pre" or "post", depending on hook.
+        """
+
         def dec(f):
             dispatch_arg = 'dispatcher' in inspect.signature(f).parameters
             pf = partial(f, dispatcher = self) if dispatch_arg else f
