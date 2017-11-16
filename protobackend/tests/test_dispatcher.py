@@ -1,4 +1,6 @@
-from protobackend.dispatcher import Dispatcher
+from protobackend.dispatcher import Dispatcher, fs_hook
+import tempfile
+import os
 import pytest
 
 class A:
@@ -44,6 +46,38 @@ def test_hook_dispatch_arg(d):
 
     assert d.dispatch({'command': 'get_y', 'payload': {'y': 2}}) == 2
 
+def test_fs_hook_file(d):
+    d.hook('pre')(fs_hook)
+    with tempfile.TemporaryDirectory() as td:
+        dc_code = [{
+                'name': 'script.py',
+                'content': 'print(1 + 1)',
+                'isFolder': False,
+                'path': td
+                }]
+
+        d.dispatch({'command': 'do_stuff',
+                    'payload': {'DC_CODE': dc_code} })
+
+        fname = os.path.join(td, 'script.py')
+        assert os.path.isfile(fname)
+        assert open(fname).read() == dc_code[0]['content']
+
+def test_fs_hook_folder(d):
+    d.hook('pre')(fs_hook)
+    with tempfile.TemporaryDirectory() as td:
+        dc_code = [{
+                'name': 'some_folder',
+                'content': '',
+                'isFolder': True,
+                'path': td
+                }]
+
+        d.dispatch({'command': 'do_stuff',
+                    'payload': {'DC_CODE': dc_code} })
+        assert os.path.isdir(os.path.join(td, 'some_folder'))
+
 def test_expose(d):
     get_x = d.expose('get_x')
     assert get_x({'x': 1}) == 1
+
