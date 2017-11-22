@@ -22,11 +22,11 @@ class CaptureErrors(object):
             return
 
         debug = get_debug_mode()
-        if debug == "True" :
-            error_message = Traceback.format_exception(exc_type, exception, traceback)
-        elif debug == "raise":
+        if debug == "raise":
             raise exception
-        else :
+        elif debug:
+            error_message = Traceback.format_exception(exc_type, exception, traceback)
+        else:
             error_message = str(exception)
 
         entire_message = "DataCamp encountered the following error:\n{0}\n".format(error_message)
