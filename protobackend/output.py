@@ -3,6 +3,10 @@ import traceback as Traceback
 import json
 import functools
 
+def get_debug_mode():
+    envs = [os.environ.get(pref + '_BACKEND_DEBUG') for pref in ['DC', 'SQL', 'PYTHON']]
+    return functools.reduce(lambda x,y: x or y, envs)
+
 class CaptureErrors(object):
 
     TYPE = "type"
@@ -17,12 +21,12 @@ class CaptureErrors(object):
         if exc_type is None:
             return
 
-        debug = os.environ.get('SQL_BACKEND_DEBUG') or os.environ.get('DC_BACKEND_DEBUG')
-        if debug == "True" :
-            error_message = Traceback.format_exception(exc_type, exception, traceback)
-        elif debug == "raise":
+        debug = get_debug_mode()
+        if debug == "raise":
             raise exception
-        else :
+        elif debug:
+            error_message = Traceback.format_exception(exc_type, exception, traceback)
+        else:
             error_message = str(exception)
 
         entire_message = "DataCamp encountered the following error:\n{0}\n".format(error_message)
