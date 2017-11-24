@@ -1,0 +1,17 @@
+language: python
+python:
+- '3.5'
+install:
+- pip install .
+- pip install -r requirements.txt
+script: py.test
+deploy:
+  provider: pypi
+  user: machow
+  password:
+    secure: hUhKfEiA1Cww+hefpAODZSKHEYMiHwPAJvkylFhlQOo2B6NhSia+JBCtTmA4OueZL3cHeUo/JhAdaz7qxTmpQpdmw3+ksDcR3pbHUgOImv3oGD5597Wq3zdZBZAZd2mern4rxR4mVYz3JesGx1EBhnWaudyQaKmfYrpubrMAkC7ozhiHlFZw5xTpqymknBtjfTqvupKp602T4F5CXJT+u6uuL68o1h+4Vr1msMojyZDCq72b9McgJQ4MtH4oGvLWjk89c8cBRDedZrlbysOWxzwVn3YdeMZXiqMCRb4/wGPt6mA488hAuWDIYydkFrYTxjp1t1vVEk8ciM3cOD7PfooXWBv5O6biSIT9PrhBsG284EqthjO1S0n54zz45CH7f971fXnUuk31FHeW/SPtemntGpHt6gZV9M3/7vikw5FxW+64QEU3VtUQ2gYPA8RRf94GfQh/9rP/tHgIWJL6d8K5KOpYNMIsSLs+VB+pNWIb+Zxkyse+ppMY4f7gcxMqtcarqrsGm2u20cgDaUHUBqtJLx9W/AhpvOiAVQpiyqzpRZnFwMQBHmV8rbVFiugjBNZLV/YTPemfd+xIxVvGuP2sXjPOQJXTioieKhPJxzJ3BQw5k0R5EIhQko5ZD5Ual1j4YDGMHc+jLaVUTMTMzPIIdW68ogMzf8HbREJ2NY0=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: datacamp/protobackend
+  skip_upload_docs: true
