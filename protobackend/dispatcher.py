@@ -1,7 +1,7 @@
 from functools import reduce, wraps, partial
 import inspect
 import json
-import os
+import pdb
 
 def pipe(funcs, data, **kwargs):
     return reduce(lambda x, f: f(x, **kwargs), funcs, data)
@@ -87,32 +87,6 @@ def init_hook(data, cmd, dispatcher):
         dispatcher.active_exercise = ExCls(data)
     
     return data
-
-
-def fs_hook(data, cmd, dispatcher):
-    dc_code = data.get("DC_CODE")
-    if isinstance(dc_code, list):
-        for entry in dc_code: _fs_save(**entry)
-
-    return data
-
-
-def _fs_save(name, content, isFolder, path, **kwargs):
-    """
-    """
-
-    full_path = os.path.join(path, name)
-
-    if isFolder:
-        mkdir_p(full_path)
-    else: 
-        with open(full_path, 'w') as f:f.write(content)
-
-def mkdir_p(path):
-    try: os.mkdir(path)
-    except FileExistsError: pass
-
-
 
 # Worker thread ---------------------------------------------------------------
 
