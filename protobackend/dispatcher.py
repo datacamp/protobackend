@@ -92,12 +92,12 @@ def init_hook(data, cmd, dispatcher):
 def fs_hook(data, cmd, dispatcher):
     dc_code = data.get("DC_CODE")
     if isinstance(dc_code, list):
-        for entry in dc_code: fs_save(**entry)
+        for entry in dc_code: _fs_save(**entry)
 
     return data
 
 
-def fs_save(name, content, isFolder, path, **kwargs):
+def _fs_save(name, content, isFolder, path, **kwargs):
     """
     """
 
