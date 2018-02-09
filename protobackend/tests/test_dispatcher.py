@@ -1,7 +1,8 @@
-from protobackend.dispatcher import Dispatcher, fs_hook
+from protobackend.dispatcher import Dispatcher, fs_hook, fs_save
 import tempfile
 import os
 import pytest
+from pathlib import Path
 
 class A:
     @staticmethod
@@ -76,6 +77,13 @@ def test_fs_hook_folder(d):
         d.dispatch({'command': 'do_stuff',
                     'payload': {'DC_CODE': dc_code} })
         assert os.path.isdir(os.path.join(td, 'some_folder'))
+
+def test_fs_save_makes_dirs():
+    with tempfile.TemporaryDirectory() as td:
+        fs_save('a/b/c.txt', "yo", isFolder = False, path = td)
+
+        assert (Path(td) / 'a/b').is_dir()
+        assert (Path(td) / 'a/b/c.txt').is_file()
 
 def test_expose(d):
     get_x = d.expose('get_x')

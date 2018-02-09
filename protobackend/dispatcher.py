@@ -98,18 +98,18 @@ def fs_hook(data, cmd, dispatcher):
 
 
 def fs_save(name, content, isFolder, path, **kwargs):
-    """
-    """
+    """Save a file or folder to disk.  Makes intermediate directories."""
 
     full_path = os.path.join(path, name)
 
-    if isFolder:
-        mkdir_p(full_path)
-    else: 
-        with open(full_path, 'w') as f:f.write(content)
+    dirname = full_path if isFolder else os.path.dirname(full_path)
+    mkdir_p(dirname)
+
+    if not isFolder:
+        with open(full_path, 'w') as f: f.write(content)
 
 def mkdir_p(path):
-    try: os.mkdir(path)
+    try: os.makedirs(path)
     except FileExistsError: pass
 
 
