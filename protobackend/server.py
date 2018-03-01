@@ -40,8 +40,8 @@ class MainHandler(tornado.web.RequestHandler):
 
     def put(self):
         out = self.dispatch(self.json_args)
-        #self.write("Hello, world")
-        self.write(json.dumps(out))
+        self.set_header('Content-Type', 'application/json')
+        self.write(out)
 
     def get(self):
         self.write('1')
