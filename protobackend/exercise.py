@@ -6,6 +6,7 @@ class BaseExercise:
     def __init__(self, data, worker = None):
         self.dc_pec = data.get("DC_PEC", "")
         self.dc_sct = data.get("DC_SCT", "")
+        self.dc_force_diagnose = data.get("DC_FORCE_DIAGNOSE", False)
         self.dc_sct_debug = data.get("DC_SCT_DEBUG", False)
 
         self.dc_solution = self._fmt_dc_code(data.get("DC_SOLUTION", ""))
