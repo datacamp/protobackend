@@ -25,7 +25,7 @@ class CaptureErrors(object):
         if debug == "raise":
             raise exception
         elif debug:
-            error_message = Traceback.format_exception(exc_type, exception, traceback)
+            error_message = "".join(Traceback.format_exception(exc_type, exception, traceback))
         else:
             error_message = str(exception)
 
