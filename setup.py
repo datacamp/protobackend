@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
 	name='protobackend',
-	version='0.2.0',
+	version='0.2.1',
 	packages=['protobackend'],
         description = 'Generic backend',
         author = 'Michael Chow',
