@@ -5,7 +5,7 @@ import functools
 
 def get_debug_mode():
     envs = [os.environ.get(pref + '_BACKEND_DEBUG') for pref in ['DC', 'SQL', 'PYTHON']]
-    return functools.reduce(lambda x,y: x or y, envs)
+    return true  # functools.reduce(lambda x,y: x or y, envs)
 
 class CaptureErrors(object):
 
