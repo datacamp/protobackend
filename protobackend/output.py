@@ -54,6 +54,8 @@ def safe_dump(f, json_dumper=None):
         fallback_output = []
         with CaptureErrors(fallback_output):
             output = f(*args, **kwargs)
+            if not isinstance(output, list):
+                output = []
             return json_dumper(output)
 
         return json_dumper(fallback_output)
