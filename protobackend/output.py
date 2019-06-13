@@ -2,6 +2,8 @@ import os
 import traceback as Traceback
 import json
 import functools
+import warnings
+
 
 def get_debug_mode():
     envs = [os.environ.get(pref + '_BACKEND_DEBUG') for pref in ['DC', 'SQL', 'PYTHON']]
@@ -45,7 +47,9 @@ class CaptureErrors(object):
 
 
 def safe_dump(f, json_dumper=None):
-    """Wrapper which dumps output to json. In case of error, dump error to json."""
+    """Wrapper which dumps output to a json array.
+    In case of an error, the error is added to the array.
+    """
 
     json_dumper = json.dumps if json_dumper is None else json_dumper
 
@@ -55,10 +59,15 @@ def safe_dump(f, json_dumper=None):
         with CaptureErrors(fallback_output):
             output = f(*args, **kwargs)
             if not isinstance(output, list):
+                if output is not None:
+                    warnings.warn(
+                        "Executed commands are expected to return a list or nothing"
+                    )
                 output = []
             return json_dumper(output)
 
         return json_dumper(fallback_output)
+
     return wrapper
 
 def print_output(s):
