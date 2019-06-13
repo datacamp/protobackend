@@ -3,6 +3,7 @@ import traceback as Traceback
 import json
 import functools
 import warnings
+from typing import Callable, Optional
 
 
 def get_debug_mode():
@@ -46,7 +47,9 @@ class CaptureErrors(object):
         return False
 
 
-def safe_dump(f, json_dumper=None):
+def safe_dump(
+    f: Callable[..., Optional[list]], json_dumper: Callable = None
+) -> Callable[..., list]:
     """Wrapper which dumps output to a json array.
     In case of an error, the error is added to the array.
     """
