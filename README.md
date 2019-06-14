@@ -1,6 +1,8 @@
 protobackend
 =============
 
+The basis and framework on which the language specific backends are built.
+
 Installation
 ------------
 
