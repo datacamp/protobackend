@@ -1,9 +1,10 @@
 from os import path
 
+
 class BaseExercise:
     EXERCISE_TYPE = "Exercise"
 
-    def __init__(self, data, worker = None):
+    def __init__(self, data, worker=None):
         self.dc_pec = data.get("DC_PEC", "")
         self.dc_sct = data.get("DC_SCT", "")
         self.dc_force_diagnose = data.get("DC_FORCE_DIAGNOSE", False)
@@ -32,5 +33,5 @@ class BaseExercise:
             return dc_code
 
         get = lambda k: (entry.get(k) for entry in dc_code)
-        paths = [path.join(*entry) for entry in zip(get('path'), get('name'))]
-        return dict(zip(paths, get('content')))
+        paths = [path.join(*entry) for entry in zip(get("path"), get("name"))]
+        return dict(zip(paths, get("content")))
