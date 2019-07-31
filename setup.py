@@ -4,7 +4,7 @@ from os import path
 from setuptools import setup
 
 PACKAGE_NAME = "protobackend"
-VERSION="0.2.2"
+VERSION = "0.2.3"
 
 HERE = path.abspath(path.dirname(__file__))
 README_FILE = path.join(HERE, "README.md")
